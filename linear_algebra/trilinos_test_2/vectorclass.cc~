@@ -1,0 +1,32 @@
+
+class Two;
+
+class One
+{
+public:
+
+    One()
+    {
+    }
+
+private:
+
+    vector<Two> twos_;
+};
+
+class Two
+{
+public:
+    Two(One &one):
+        one_(one)
+    {
+    }
+private:
+
+    One &one_;
+};
+
+int main()
+{
+    One one;
+}

@@ -1,0 +1,172 @@
+
+#include <iostream>
+#include <vector>
+#include <string>
+
+#include <mpi.h>
+
+//#include <Epetra_config.h>
+#include <Epetra_MpiComm.h>
+#include <Epetra_Map.h>
+#include <Epetra_CrsMatrix.h>
+#include <Epetra_MultiVector.h>
+#include <Epetra_LinearProblem.h>
+
+//#include "Amesos_ConfigDefs.h"
+#include <Amesos.h>
+
+class amesos_test
+{
+private:
+    
+    // Variables
+    const int index_base_ = 0;
+    int num_global_elements_ = 0;
+    int num_my_elements_ = 0;
+    const int num_vectors_ = 1;
+    
+    std::vector<int> num_entries_per_row_;
+    std::vector<int> my_global_elements_;
+
+    Epetra_Map *map_ = 0;
+    Epetra_MpiComm *comm_ = 0;
+    Epetra_CrsMatrix *matrix_ = 0;
+    Epetra_MultiVector *lhs_ = 0;
+    Epetra_MultiVector *rhs_ = 0;
+    Epetra_LinearProblem *problem_ = 0;
+    
+    std::string solver_type_ = "Klu";
+    
+    Amesos_BaseSolver *solver_ = 0;
+    Amesos factory_;
+    
+public:
+    
+    // Constructor
+    amesos_test(int n):
+        num_global_elements_(n)
+    {
+        // Initialize Epetra matrices
+        comm_ = new Epetra_MpiComm(MPI_COMM_WORLD);
+        map_ = new Epetra_Map(num_global_elements_, index_base_, *comm_);
+        
+        num_my_elements_ = map_->NumMyElements();
+        my_global_elements_.assign(map_->MyGlobalElements(), map_->MyGlobalElements() + n);
+        
+        num_entries_per_row_.resize(num_my_elements_, 0);
+        
+        for (int i = 0; i < num_my_elements_; ++i)
+        {
+            if (my_global_elements_[i]==0 || my_global_elements_[i]==num_global_elements_-1)
+            {
+                num_entries_per_row_[i] = 2;
+            }
+            else
+            {
+                num_entries_per_row_[i] = 3;
+            }
+        }
+        
+        matrix_ = new Epetra_CrsMatrix(Copy, *map_, &num_entries_per_row_[0], true);
+        
+        for (int i = 0; i < num_my_elements_; ++i)
+        {
+            std::vector<double> values;
+            std::vector<int> indices;
+            int j = my_global_elements_[i];
+            
+            if (j==0)
+            {
+                indices.resize(2, 0);
+                values.resize(2, j);
+
+                indices[0] = j;
+                indices[1] = j + 1;
+            }
+            else if (j==n-1)
+            {
+                indices.resize(2, 0);
+                values.resize(2, j);
+
+                indices[0] = j - 1;
+                indices[1] = j;
+            }
+            else
+            {
+                indices.resize(3, 0);
+                values.resize(3, j);
+
+                indices[0] = j - 1;
+                indices[1] = j;
+                indices[2] = j + 1;
+            }
+
+            matrix_->InsertGlobalValues(j, num_entries_per_row_[i], &values[0], &indices[0]);
+        }
+
+        lhs_ = new Epetra_MultiVector(*map_, num_vectors_);
+        rhs_ = new Epetra_MultiVector(*map_, num_vectors_);
+
+        lhs_->PutScalar(0.0);
+        rhs_->Random();
+        
+        matrix_->FillComplete();
+        
+        problem_ = new Epetra_LinearProblem(matrix_, lhs_, rhs_);
+        
+        // Initialize Amesos solver
+        
+        solver_ = factory_.Create(solver_type_, *problem_);
+
+       
+    };
+
+    // Destructor
+    ~amesos_test()
+    {
+        delete map_;
+        delete comm_;
+        delete matrix_;
+        delete lhs_;
+        delete rhs_;
+        delete problem_;
+        delete solver_;
+        
+        comm_ = 0;
+        map_ = 0;
+        matrix_ = 0;
+        lhs_ = 0;
+        rhs_ = 0;
+        problem_ = 0;
+        solver_ = 0;
+    }
+    
+    // Methods
+    void solve_system()
+    {
+    }
+
+    // Accessors
+    void print_result()
+    {
+    }
+};
+
+int main (int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        std::cout << "./test [n]" << std::endl;
+        return 1;
+    }
+
+    MPI_Init(&argc, &argv);
+
+    unsigned n = std::atoi(argv[1]);
+
+    amesos_test problem(n);
+    
+    // problem.print_result();     
+
+    MPI_Finalize();
+}

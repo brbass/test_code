@@ -1,0 +1,21 @@
+<!-- <?xml version="1.0"?> -->
+<regions>
+  <number_of_regions> 2 </number_of_regions>
+  <region>
+    <sigma_t> 3 2 </sigma_t>
+    <sigma_s> 1 2 5 3 </sigma_s>
+    <sigma_f> 2 3 </sigma_f>
+    <number_of_cells> 10 </number_of_cells>
+    <region_length> 1.0 </region_length>
+  </region>
+  <region>
+    <sigma_t> 2 4 </sigma_t>
+    <sigma_s> 4 2 3 1 </sigma_s>
+    <sigma_f> 1 6 </sigma_f>
+    <number_of_cells> 20 </number_of_cells>
+    <region_length> 2.0 </region_length>
+  </region>
+</regions>
+<other>
+  <hi> 2 </hi>
+</other>

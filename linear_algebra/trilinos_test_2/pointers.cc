@@ -1,0 +1,80 @@
+#include <iostream>
+#include <memory>
+
+using namespace std;
+
+class Pet
+{
+private:
+    
+    unsigned *cat_;
+    unsigned &dog_;
+    unsigned rat_;
+    
+public:
+    
+    Pet(unsigned &cat, unsigned &dog, unsigned rat):
+        dog_(dog),
+        rat_(rat)
+    {
+        cat_ = &cat;
+    }
+
+    void meow()
+    {
+        cout << "cat: " << *cat_ << endl;
+    }
+
+    void woof()
+    {
+        cout << "dog: " << dog_ << endl;
+    }
+
+    void squeak()
+    {
+        cout << "rat: " << rat_ << endl;
+    }
+};
+
+class Thing
+{
+private:
+
+    unique_ptr<Pet> pet_;
+
+public:
+
+    Thing()
+    {
+        unsigned one = 1;
+        unsigned two = 2;
+        unsigned three = 3;
+        pet_ = unique_ptr<Pet>(new Pet(one, two, three));
+        
+        pet_->meow();
+    }
+};
+
+
+int main()
+{
+    unsigned cat = 1;
+    unsigned dog = 2;
+    unsigned rat = 3;
+    
+    Pet pet(cat, dog, rat);
+
+    // pet.meow();
+    // pet.woof();
+    // pet.squeak();
+    
+    // cat = 4;
+    // dog = 5;
+    // rat = 6;
+    
+    // pet.meow();
+    // pet.woof();
+    // pet.squeak();
+
+    Thing thing;
+}

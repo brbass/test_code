@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/brbass/research/test/gsl_test/src/main.cc
+gsl/gsl_vector.h
+-
+gsl/gsl_matrix.h
+-
+gsl/gsl_linalg.h
+-
+

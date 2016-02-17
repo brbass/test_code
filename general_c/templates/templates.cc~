@@ -1,0 +1,20 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+template<class T>
+
+int num(vector<T> &vec)
+{
+    return vec.size();
+}
+
+int main()
+{
+    vector<double> test1(5, 1);
+    vector<unsigned> test2(4, 2);
+
+    cout << num(test1) << endl;
+    cout << num(test2) << endl;
+}

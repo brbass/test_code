@@ -1,0 +1,46 @@
+all: amesos amesos2 boost epetra1 epetra2 functions inheritance inline pointers vectorclass
+
+amesos: amesos.cc
+	export OMPI_CXX=icpc
+	mpic++ \
+		-std=c++11 -g -o3 \
+		-lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore \
+		-I/usr/local/Cellar/trilinos/11.10.2/include \
+		-L/usr/local/Cellar/trilinos/11.10.2/lib \
+		amesos.cc -o amesos
+amesos2: amesos2.cc
+	export OMPI_CXX=g++
+	mpic++ \
+		-std=c++11 -g -o3 \
+		-lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore \
+		-I/usr/local/Cellar/trilinos/11.10.2/include \
+		-L/usr/local/Cellar/trilinos/11.10.2/lib \
+		amesos2.cc -o amesos2
+boost: boost.cc
+	g++ -o3 boost.cc -o boost
+epetra1: epetra1.cc
+	export OMPI_CXX=g++
+	mpic++ \
+		-std=c++11 -g -o3 \
+		-lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore \
+		-I/usr/local/Cellar/trilinos/11.10.2/include \
+		-L/usr/local/Cellar/trilinos/11.10.2/lib \
+		epetra1.cc -o epetra1
+epetra2: epetra2.cc
+	export OMPI_CXX=g++
+	mpic++ \
+	-std=c++11 -g -o3 \
+	-lepetra -lepetraext -ltriutils \
+	-I/usr/local/Cellar/trilinos/11.10.2/include \
+	-L/usr/local/Cellar/trilinos/11.10.2/lib \
+	epetra2.cc -o epetra2
+functions: functions.cc
+	g++-4.9 -o3 -g -std=c++11 functions.cc -o functions
+inheritance: inheritance.cc
+	g++-4.9 -o3 -g -std=c++11 inheritance.cc -o inheritance
+inline: inline.cc
+	g++ -o3 inline.cc -o inline
+pointers: pointers.cc
+	g++ -g -O3 -std=c++11 pointers.cc -o pointers
+vectorclass: vectorclass.cc
+	g++ -o3 vectorclass.cc -o vectorclass

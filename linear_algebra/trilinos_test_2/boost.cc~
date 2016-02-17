@@ -1,0 +1,158 @@
+#include <boost/numeric/ublas/banded.hpp>
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/vector.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+#include <boost/numeric/ublas/io.hpp>
+//#include "umfpack.h"
+
+namespace ublas = boost::numeric::ublas;
+
+class boost_test
+{
+private:
+    ublas::banded_matrix<double> A_;
+    ublas::vector<double> B_;
+    ublas::vector<double> x_;
+    
+    unsigned n_;
+public:
+    boost_test(unsigned n)
+    {
+        n_ = n;
+        A_.resize(n, n, 0, 0);
+        B_.resize(n);           
+        
+        for (unsigned i = 0; i < n; ++i)
+        {
+            A_(i, i) = n - i;
+            B_(i) = 0.1 * i;
+        }
+    }
+    void solve_system()
+    {
+        ublas::permutation_matrix<double> P_(n_);
+        ublas::lu_factorize(A_, P_);
+        x_ = B_;
+        ublas::lu_substitute(A_,P_,x_);
+    }
+    void print_result()
+    {
+        std::cout << A_ << std::endl;
+        std::cout << B_ << std::endl;
+        std::cout << x_ << std::endl;
+    }
+};
+
+class amesos_test
+{
+    
+};
+
+int main (int argc, char *argv[])
+{
+    if (argc != 2)
+    {
+        std::cout << "./test [n]" << std::endl;
+        return 1;
+    }
+
+    unsigned n = std::atoi(argv[1]);
+    
+    // boost_test boost_problem(n);
+    // boost_problem.solve_system();
+
+    // umf_test umf_problem(n);
+    // umf_problem.solve_system();
+
+    // problem.print_result();     
+}
+
+
+// class belos_test
+// {
+//     solve_system()
+//     {
+//         using Teuchos::ParameterList;
+//         using Teuchos::parameterList;
+//         using Teuchos::RCP;
+//         using Teuchos::rcp; // Save some typing
+//         // The ellipses represent the code you would normally use to create
+//         // the sparse matrix, preconditioner, right-hand side, and initial
+//         // guess for the linear system AX=B you want to solve.
+//         RCP<OP> A = ...; // The sparse matrix / operator A
+//         RCP<OP> M = ...; // The (right) preconditioner M
+//         RCP<MV> B = ...; // Right-hand side of AX=B
+//         RCP<MV> X = ...; // Initial guess for the solution
+//         Belos::SolverFactory<Scalar, MV, OP> factory;
+//         // Make an empty new parameter list.
+//         RCP<ParameterList> solverParams = parameterList();
+//         // Set some GMRES parameters.
+//         //
+//         // "Num Blocks" = Maximum number of Krylov vectors to store.  This
+//         // is also the restart length.  "Block" here refers to the ability
+//         // of this particular solver (and many other Belos solvers) to solve
+//         // multiple linear systems at a time, even though we are only solving
+//         // one linear system in this example.
+//         solverParams->set ("Num Blocks", 40);
+//         solverParams->set ("Maximum Iterations", 400);
+//         solverParams->set ("Convergence Tolerance", 1.0e-8);
+//         // Create the GMRES solver.
+//         RCP<Belos::SolverManager<Scalar, MV, OP> > solver =
+//             factory.create ("GMRES", solverParams);
+//         // Create a LinearProblem struct with the problem to solve.
+//         // A, X, B, and M are passed by (smart) pointer, not copied.
+//         RCP<Belos::LinearProblem<Scalar, MV, OP> > problem =
+//             rcp (new Belos::LinearProblem<Scalar, MV, OP> (A, X, B));
+//         problem->setRightPrec (M);
+//         // Tell the solver what problem you want to solve.
+//         solver->setProblem (problem);
+//         // Attempt to solve the linear system.  result == Belos::Converged
+//         // means that it was solved to the desired tolerance.  This call
+//         // overwrites X with the computed approximate solution.
+//         Belos::ReturnType result = solver->solve();
+//         // Ask the solver how many iterations the last solve() took.
+//         const int numIters = solver->getNumIters();
+//     }
+// };
+
+// class umf_test
+// {
+// private:
+//     unsigned n_;
+//     std::vector<int> A_count_;
+//     std::vector<int> A_indices_;
+//     std::vector<double> A_;
+//     std::vector<double> B_;
+//     std::vector<double> x_;
+//     void *Symbolic, *Numeric;
+    
+// public:
+//     umf_test(unsigned n)
+//     {
+//         n_ = n;
+
+//         A_count_.resize(n);
+//         A_indices_.resize(n);
+//         A_.resize(n);
+//         B_.resize(n);
+//         x_.resize(n);
+        
+//         for (unsigned i = 0; i < n; ++i)
+//         {
+//             A_[i] = n - i;
+//             B_[i] = 0.1 * i;
+//             A_count_[i] = i;
+//             A_indices_[i] = i;
+//         }
+
+//         umfpack_di_symbolic(n, n, &A_count_[0], &A_indices_[0], &A_[0], &Symbolic, NULL, NULL);
+//         umfpack_di_numeric(&A_count_[0], &A_indices_[0], &A_[0], Symbolic, &Numeric, NULL, NULL);
+//     }
+//     void solve_system()
+//     {
+//         umfpack_di_solve(UMFPACK_A, &A_count_[0], &A_indices_[0], &A_[0], &x_[0], &B_[0], Numeric, NULL, NULL);
+//         umfpack_di_free_numeric(&Numeric);
+//     }
+// };
+
+

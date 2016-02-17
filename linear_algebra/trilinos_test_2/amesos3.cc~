@@ -1,0 +1,28 @@
+#include <random>
+
+#include <mpi.h>
+
+#include <Epetra_MpiComm.h>
+#include <Epetra_Map.h>
+#include <Epetra_CrsMatrix.h>
+#include <Epetra_MultiVector.h>
+#include <Epetra_LinearProblem.h>
+#include <Amesos.h>
+
+using namespace std;
+
+int main (int argc, char *argv[])
+{
+    MPI_Init(&argc, &argv);
+
+    int num_rows = 10;
+    int num_mat = 2;
+    
+    Epetra_MpiComm comm (MPI_COMM_WORLD);
+    Epetra_Map map (num_rows, 0, comm);
+
+    vector<int> num_entries_per_row (num_rows, 1);
+
+    Epetra_CrsMatrix matrix(Copy, map, &num_entries_per_row[0], true);
+    
+}
