@@ -1,0 +1,15 @@
+#include <iomanip>
+#include <iostream>
+#include <cmath>
+#include <memory>
+#include <vector>
+
+#include <Epetra_SerialComm.h>
+//#include <Epetra_MpiComm.h>
+#include <Epetra_Map.h>
+#include <Epetra_CrsMatrix.h>
+#include <Epetra_FECrsMatrix.h>
+#include <Epetra_Vector.h>
+#include <Epetra_LinearProblem.h>
+#include <Amesos.h>
+
