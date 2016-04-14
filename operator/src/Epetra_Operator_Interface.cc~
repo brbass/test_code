@@ -1,0 +1,30 @@
+#include "Epetra_Interface.hh"
+
+Epetra_Operator_Interface::
+Epetra_Operator_Interface(shared_ptr<Epetra_Comm> const &comm,
+                          shared_ptr<Epetra_Map> const &map,
+                          shared_ptr<Vector_Operator> const &oper):
+    comm_(comm),
+    map_(map),
+    oper_(oper)
+{
+    Check(oper_->square());
+}
+
+int Epetra_Operator_Interface::
+Apply(Epetra_MultiVector const &X,
+      Epetra_MultiVector &Y) const
+{
+    Insist(X.NumVectors() == Y.NumVectors());
+    Insist(X.NumVectors() == 1);
+    int const size = oper_.size();
+
+    int my_lda;
+    vector<double> x(size);
+    vector<double> y(size);
+
+    X.ExtractCopy(&x[0], X.Stride());
+    Y.ExtractView(&y[0], &my_lda);
+    
+    (*oper)(x);
+}
