@@ -47,7 +47,7 @@ private:
     unique_ptr<Epetra_LinearProblem> problem_;
     unique_ptr<Amesos_BaseSolver> amesos_solver_;
     unique_ptr<AztecOO> aztec_solver_;
-
+    
     int num_my_elements_;
     vector<int> my_global_elements_;
     vector<int> num_entries_per_row_;
