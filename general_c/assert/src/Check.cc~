@@ -1,0 +1,23 @@
+#include <iostream>
+#include <stdexcept>
+#include <string>
+
+namespace ch_ns
+{
+    void check(std::string condition,
+               std::string message,
+               std::string file,
+               int line);
+    {
+        using namespace std;
+    
+        cerr << condition;
+        cerr << " failed with error ";
+        cerr << message;
+        cerr << " on line ";
+        cerr << line;
+        cerr << endl;
+    
+        throw runtime_error();
+    }
+}

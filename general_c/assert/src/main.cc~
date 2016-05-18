@@ -1,0 +1,7 @@
+#include "Check.hh"
+
+int main()
+{
+    Check(true, "hello");
+    Check(false, "hello");
+}

@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/brbass/Documents/research/code/test_code/general_c/assert/src/Check.cc
+iostream
+-
+stdexcept
+-
+string
+-
+
+/Users/brbass/Documents/research/code/test_code/general_c/assert/src/Check.hh
+string
+-
+
+/Users/brbass/Documents/research/code/test_code/general_c/assert/src/main.cc
+Check.hh
+/Users/brbass/Documents/research/code/test_code/general_c/assert/src/Check.hh
+
