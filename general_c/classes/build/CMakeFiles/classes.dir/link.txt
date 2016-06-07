@@ -1,0 +1,1 @@
+mpic++    -std=c++11 -o3 -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/classes.dir/src/Elephant.cc.o CMakeFiles/classes.dir/src/main.cc.o  -o classes  

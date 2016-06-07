@@ -1,0 +1,21 @@
+#include "Elephant.hh"
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+vector<shared_ptr<Elephant> > children(2);
+
+shared_ptr<Elephant> mom = make_shared<Elephant>(50,
+                                                     children);
+
+children[0] = make_shared<Elephant>(10);
+children[1] = make_shared<Elephant>(20);
+    
+shared_ptr<Elephant> baby;
+
+baby = mom.baby(0);
+cout << baby->weight() << endl;
+}

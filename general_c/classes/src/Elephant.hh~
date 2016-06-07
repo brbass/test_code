@@ -1,0 +1,9 @@
+#ifndef Elephant_hh
+#define Elephant_hh
+
+class Elephant
+{
+    Elephant(unique_ptr<Elephant> babies)
+}
+
+#endif
