@@ -1,0 +1,12 @@
+#include "Points.hh"
+
+#include "Random_Number_Generator.hh"
+
+Points::
+Points(int num_points):
+    num_points_(num_points)
+{
+    Random_Number_Generator rng(-1, 1);
+    
+    data_ = rng.random_double_vector(num_points);
+}

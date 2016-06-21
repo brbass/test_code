@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/brbass/Documents/research/code/test_code/sort/src/Points.cc
+Points.hh
+/Users/brbass/Documents/research/code/test_code/sort/src/Points.hh
+Random_Number_Generator.hh
+/Users/brbass/Documents/research/code/test_code/sort/src/Random_Number_Generator.hh
+
+/Users/brbass/Documents/research/code/test_code/sort/src/Points.hh
+memory
+-
+vector
+-
+nanoflann.hpp
+/Users/brbass/Documents/research/code/test_code/sort/src/nanoflann.hpp
+
+/Users/brbass/Documents/research/code/test_code/sort/src/Random_Number_Generator.cc
+Random_Number_Generator.hh
+/Users/brbass/Documents/research/code/test_code/sort/src/Random_Number_Generator.hh
+chrono
+-
+vector
+-
+
+/Users/brbass/Documents/research/code/test_code/sort/src/Random_Number_Generator.hh
+random
+-
+vector
+-
+
+/Users/brbass/Documents/research/code/test_code/sort/src/main.cc
+Points.hh
+/Users/brbass/Documents/research/code/test_code/sort/src/Points.hh
+
