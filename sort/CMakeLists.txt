@@ -20,7 +20,6 @@ file(GLOB SOURCES "src/*.cc")
 
 include_directories(src)
 
-add_executable(classes ${SOURCES})
+add_executable(kd_sort ${SOURCES})
 
-# install(TARGETS kd_sort DESTINATION .)
 

@@ -11,29 +11,32 @@ using std::vector;
 
 class Points
 {
-private: class KD_Adaptor;
+    class KD_Adaptor;
     
 public:
-
     
     typedef nanoflann::L2_Adaptor<double,
                                   KD_Adaptor> L2A;
+    
     typedef nanoflann::KDTreeSingleIndexAdaptor<L2A,
-                                                KD_Adaptor> KDT;
+                                                KD_Adaptor,
+                                                -1,
+                                                int> KDT;
     
     Points(int num_points,
-           int dimension);
+           int dimension,
+           double bound);
     
+    void find_points(int num,
+                     int index);
+
 private:
     
     int num_points_;
     int dimension_;
 
     vector<double> data_;
-
-    void find_points(int num,
-                     int index);
-
+    
     shared_ptr<KD_Adaptor> adaptor_;
     shared_ptr<KDT> kd_tree_;
     
@@ -53,7 +56,7 @@ private:
             return points_.data_[dim + points_.dimension_ * idx];
         }
 
-        inline double kdtree_distance(const double *p1, const int idx_p2, int /*size*/)
+        inline double kdtree_distance(const double *p1, const int idx_p2, int /*size*/) const
         {
             double sum = 0;
 
