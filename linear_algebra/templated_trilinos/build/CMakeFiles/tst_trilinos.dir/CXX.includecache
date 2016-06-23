@@ -1,0 +1,36 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Test_Tpetra.cc
+Test_Tpetra.hh
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Test_Tpetra.hh
+memory
+-
+Teuchos_RCPStdSharedPtrConversions.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Teuchos_RCPStdSharedPtrConversions.hpp
+Tpetra_CrsMatrix.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Tpetra_CrsMatrix.hpp
+Tpetra_DefaultPlatform.hpp
+-
+Tpetra_Map.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Tpetra_Map.hpp
+Tpetra_MultiVector.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Tpetra_MultiVector.hpp
+Tpetra_Operator.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Tpetra_Operator.hpp
+Tpetra_Vector.hpp
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Tpetra_Vector.hpp
+
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Test_Tpetra.hh
+
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/main.cc
+mpi.h
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/mpi.h
+Test_Tpetra.hh
+/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/src/Test_Tpetra.hh
+
