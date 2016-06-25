@@ -1,0 +1,26 @@
+cmake_minimum_required (VERSION 3.1)
+
+project(Test_Trilinos)
+
+# compiler options
+set(CMAKE_C_COMPILER "mpicc")
+set(CMAKE_CXX_COMPILER "mpic++")
+set(CMAKE_VERBOSE_MAKEFILE off)
+set(CMAKE_BUILD_TYPE Debug)
+
+# standard flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -o3")
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/../bin)
+
+# trilinos flags
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore -I/usr/cac/rhel6/trilinos/12.0.1/include -L/usr/cac/rhel6/trilinos/12.0.1/lib")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore -I/usr/local/Cellar/trilinos/12.4.2_1/include -L/usr/local/Cellar/trilinos/12.4.2_1/lib")
+
+file(GLOB SOURCES "src/*.cc")
+
+include_directories(src)
+
+add_executable(tst_trilinos ${SOURCES})
+
+install(TARGETS tst_trilinos DESTINATION .)
+

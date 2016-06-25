@@ -1,7 +1,2 @@
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/edit_cache.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/rebuild_cache.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/install/local.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/list_install_components.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/install.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/install/strip.dir
-/Users/brbass/Documents/research/code/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/tst_trilinos.dir
+/home/brbass/research/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/my_library.dir
+/home/brbass/research/test_code/linear_algebra/templated_trilinos/build/CMakeFiles/tst_trilinos.dir

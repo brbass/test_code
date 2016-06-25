@@ -1,30 +1,40 @@
 cmake_minimum_required (VERSION 3.1)
 
-project(Test_Trilinos)
+# set(Trilinos_PREFIX /usr/cac/rhel6/trilinos/12.0.1)
+# set(CMAKE_PREFIX_PATH ${Trilinos_PREFIX} ${CMAKE_PREFIX_PATH})
 
-# compiler options
-set(CMAKE_C_COMPILER "mpicc")
-set(CMAKE_CXX_COMPILER "mpic++")
-set(CMAKE_VERBOSE_MAKEFILE off)
-set(CMAKE_BUILD_TYPE Debug)
+Project(Test_Trilinos)
 
-# standard flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -o3")
-set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/../bin)
+find_package(Trilinos REQUIRED)
+MESSAGE("\nFound Trilinos!  Here are the details: ")
+MESSAGE("   Trilinos_DIR = ${Trilinos_DIR}")
+MESSAGE("   Trilinos_VERSION = ${Trilinos_VERSION}")
+MESSAGE("   Trilinos_PACKAGE_LIST = ${Trilinos_PACKAGE_LIST}")
+MESSAGE("   Trilinos_LIBRARIES = ${Trilinos_LIBRARIES}")
+MESSAGE("   Trilinos_INCLUDE_DIRS = ${Trilinos_INCLUDE_DIRS}")
+MESSAGE("   Trilinos_LIBRARY_DIRS = ${Trilinos_LIBRARY_DIRS}")
+MESSAGE("   Trilinos_TPL_LIST = ${Trilinos_TPL_LIST}")
+MESSAGE("   Trilinos_TPL_INCLUDE_DIRS = ${Trilinos_TPL_INCLUDE_DIRS}")
+MESSAGE("   Trilinos_TPL_LIBRARIES = ${Trilinos_TPL_LIBRARIES}")
+MESSAGE("   Trilinos_TPL_LIBRARY_DIRS = ${Trilinos_TPL_LIBRARY_DIRS}")
+MESSAGE("   Trilinos_BUILD_SHARED_LIBS = ${Trilinos_BUILD_SHARED_LIBS}")
+MESSAGE("End of Trilinos details\n")
 
-# gsl flags
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/home/software/rhel6/gsl/1.15/lib -lgsl -lgslcblas -I/home/software/rhel6/gsl/1.15/include")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L/usr/local/Cellar/gsl/1.16/lib -lgsl -lgslcblas -I/usr/local/Cellar/gsl/1.16/include")
 
-# trilinos flags
-# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore -I/usr/cac/rhel6/trilinos/12.0.1/include -L/usr/cac/rhel6/trilinos/12.0.1/lib")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lepetra -lamesos -laztecoo -lepetraext -ltriutils -lepetra -lteuchosremainder -lteuchosnumerics -lteuchoscomm -lteuchosparameterlist -lteuchoscore -I/usr/local/Cellar/trilinos/12.4.2_1/include -L/usr/local/Cellar/trilinos/12.4.2_1/lib")
+# find_package(Anasazi REQUIRED)
+# find_package(Belos REQUIRED)
+# find_package(Teuchos REQUIRED)
+# find_package(Tpetra REQUIRED)
+# find_package( REQUIRED)
+# find_package( REQUIRED)
 
-file(GLOB SOURCES "src/*.cc")
+# project(Test_Trilinos)
 
-include_directories(src)
+# file(GLOB SOURCES "src/*.cc")
 
-add_executable(tst_trilinos ${SOURCES})
+# include_directories(src)
 
-install(TARGETS tst_trilinos DESTINATION .)
+# add_executable(tst_trilinos ${SOURCES})
+
+# install(TARGETS tst_trilinos DESTINATION .)
 
