@@ -1,0 +1,11 @@
+#ifndef Add_hh
+#define Add_hh
+
+class Add
+{
+public:
+
+    Add(int size)
+};
+
+#endif

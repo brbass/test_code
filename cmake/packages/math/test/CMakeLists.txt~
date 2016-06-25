@@ -1,0 +1,6 @@
+
+include_directories(${global_include_directories})
+
+add_executable(tst_Add tst_Add.cc)
+target_link_libraries(tst_Add math)
+add_test(Add_test tst_Add)

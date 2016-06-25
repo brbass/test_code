@@ -1,0 +1,10 @@
+include_directories(${global_include_directories})
+
+get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
+foreach(dir ${dirs})
+  message(STATUS "dir='${dir}'")
+endforeach()
+
+file(GLOB math_src *.cc *.hh)
+add_library(math ${math_src})
+install(TARGETS math DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)

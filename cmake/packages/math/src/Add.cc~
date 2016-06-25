@@ -1,0 +1,12 @@
+#include "Add.hh"
+
+Add::
+Add()
+{
+}
+
+double Add::
+apply(double x, double y)
+{
+    return x + y;
+}

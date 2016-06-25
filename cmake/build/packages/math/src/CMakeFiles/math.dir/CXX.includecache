@@ -1,0 +1,14 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/brbass/research/test_code/cmake/packages/math/src/Add.cc
+Add.hh
+/home/brbass/research/test_code/cmake/packages/math/src/Add.hh
+
+/home/brbass/research/test_code/cmake/packages/math/src/Add.hh
+
