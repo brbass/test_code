@@ -32,7 +32,7 @@ Test_Tpetra::
 Test_Tpetra(int size):
     size_(size)
 {
-    num_entries_per_row_->assign(size_, 3);
+    num_entries_per_row_ = make_shared<vector<int> >(size_, 3);
     (*num_entries_per_row_)[0] = 2;
     (*num_entries_per_row_)[size_ - 1] = 2;
 }

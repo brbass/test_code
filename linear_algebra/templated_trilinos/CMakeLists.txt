@@ -1,40 +1,34 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required(VERSION 3.1)
 
-# set(Trilinos_PREFIX /usr/cac/rhel6/trilinos/12.0.1)
-# set(CMAKE_PREFIX_PATH ${Trilinos_PREFIX} ${CMAKE_PREFIX_PATH})
+project(MyProject)
 
-Project(Test_Trilinos)
+set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_CXX_FLAGS "-std=c++11 -o3")
 
-find_package(Trilinos REQUIRED)
-MESSAGE("\nFound Trilinos!  Here are the details: ")
-MESSAGE("   Trilinos_DIR = ${Trilinos_DIR}")
-MESSAGE("   Trilinos_VERSION = ${Trilinos_VERSION}")
-MESSAGE("   Trilinos_PACKAGE_LIST = ${Trilinos_PACKAGE_LIST}")
-MESSAGE("   Trilinos_LIBRARIES = ${Trilinos_LIBRARIES}")
-MESSAGE("   Trilinos_INCLUDE_DIRS = ${Trilinos_INCLUDE_DIRS}")
-MESSAGE("   Trilinos_LIBRARY_DIRS = ${Trilinos_LIBRARY_DIRS}")
-MESSAGE("   Trilinos_TPL_LIST = ${Trilinos_TPL_LIST}")
-MESSAGE("   Trilinos_TPL_INCLUDE_DIRS = ${Trilinos_TPL_INCLUDE_DIRS}")
-MESSAGE("   Trilinos_TPL_LIBRARIES = ${Trilinos_TPL_LIBRARIES}")
-MESSAGE("   Trilinos_TPL_LIBRARY_DIRS = ${Trilinos_TPL_LIBRARY_DIRS}")
-MESSAGE("   Trilinos_BUILD_SHARED_LIBS = ${Trilinos_BUILD_SHARED_LIBS}")
-MESSAGE("End of Trilinos details\n")
+# Find Trilinos packages
 
+set(TrilinosPackages Teuchos Tpetra)
 
-# find_package(Anasazi REQUIRED)
-# find_package(Belos REQUIRED)
-# find_package(Teuchos REQUIRED)
-# find_package(Tpetra REQUIRED)
-# find_package( REQUIRED)
-# find_package( REQUIRED)
+foreach(TrilinosPackage ${TrilinosPackages})
+    find_package(${TrilinosPackage})
+    set(CMAKE_CXX_COMPILER ${${TrilinosPackage}_CXX_COMPILER} )
+    set(CMAKE_C_COMPILER ${${TrilinosPackage}_C_COMPILER} )
+    set(CMAKE_CXX_FLAGS  "${${TrilinosPackage}_CXX_COMPILER_FLAGS} ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_C_FLAGS  "${${TrilinosPackage}_C_COMPILER_FLAGS} ${CMAKE_C_FLAGS}")
+    include_directories(${${TrilinosPackage}_INCLUDE_DIRS} ${${TrilinosPackage}_TPL_INCLUDE_DIRS})
+    link_directories(${${TrilinosPackage}_LIBRARY_DIRS} ${${TrilinosPackage}_TPL_LIBRARY_DIRS})
+endforeach(TrilinosPackage)
 
-# project(Test_Trilinos)
+# Include source files
 
-# file(GLOB SOURCES "src/*.cc")
+include_directories(src)
+add_library(mylibrary src/Test_Tpetra.cc src/Test_Tpetra.hh)
+add_executable(tst_trilinos "main/main.cc")
 
-# include_directories(src)
+# Link libraries
 
-# add_executable(tst_trilinos ${SOURCES})
+target_link_libraries(tst_trilinos mylibrary)
 
-# install(TARGETS tst_trilinos DESTINATION .)
-
+foreach(TrilinosPackage ${TrilinosPackages})
+    target_link_libraries(tst_trilinos ${${TrilinosPackage}_LIBRARIES} ${${TrilinosPackage}_TPL_LIBRARIES})
+endforeach(TrilinosPackage)
