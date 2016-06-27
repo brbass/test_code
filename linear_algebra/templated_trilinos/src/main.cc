@@ -1,49 +1,24 @@
 #include "mpi.h"
 
-#include "Test_Tpetra.hh"
+#include "Test_Trilinos.hh"
 
 int main(int argc, char **argv)
 {
     MPI_Init(&argc, &argv);
-
-    int size = 4;
     
-    Test_Tpetra tpetra(size);
+    int size = 20;
+    double dx = 0.1;
+    double sigma_a = 1.0;
+    double q = 1.0;
+    
+    Test_Trilinos trilinos(size,
+                           dx,
+                           sigma_a,
+                           q);
 
-    tpetra.test1();
+    trilinos.test1();
+    trilinos.test2();
     
     MPI_Finalize();
 }
 
-// #include <Tpetra_DefaultPlatform.hpp>
-// #include <Tpetra_MpiPlatform.hpp>
-// #include <Tpetra_Vector.hpp>
-// #include <Tpetra_Version.hpp>
-// #include <Teuchos_GlobalMPISession.hpp>
-// #include <Teuchos_oblackholestream.hpp>
-
-// int main (int argc, char *argv[])
-// {
-//     typedef Tpetra::Map<> map_type;
-//     typedef Tpetra::Vector<double> vector_type;
-//     typedef vector_type::global_ordinal_type global_ordinal_type;
-    
-//     using std::endl;
-//     using Teuchos::RCP;
-//     Teuchos::oblackholestream blackHole;
-//     Teuchos::GlobalMPISession mpiSession (&argc, &argv, &blackHole);
-
-//     const Tpetra::global_size_t numGlobalEntries = 5;
-//     const global_ordinal_type indexBase = 0;
-    
-//     RCP<const Teuchos::Comm<int> > comm =
-//         RCP<const Teuchos::Comm<int> >(new Teuchos::MpiComm<int>(MPI_COMM_WORLD));
-
-//     // RCP<const map_type> contigMap =
-//     //     rcp (new map_type (numGlobalEntries, indexBase, comm));
-    
-    
-    
-    
-//     return 0;
-// }
