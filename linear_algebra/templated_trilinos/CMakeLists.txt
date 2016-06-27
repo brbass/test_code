@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -o3")
 
 # Find Trilinos packages
 
-set(TrilinosPackages Teuchos Tpetra Belos)
+set(TrilinosPackages Teuchos Tpetra Belos Anasazi)
 
 foreach(TrilinosPackage ${TrilinosPackages})
     find_package(${TrilinosPackage} REQUIRED)
