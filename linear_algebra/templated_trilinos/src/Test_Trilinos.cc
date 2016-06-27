@@ -5,6 +5,7 @@
 
 #include "BelosSolverFactory.hpp"
 #include "BelosTpetraAdapter.hpp"
+#include "Teuchos_VerboseObject.hpp"
 #include "Teuchos_RCPStdSharedPtrConversions.hpp"
 #include "Teuchos_ArrayRCP.hpp"
 #include "Teuchos_SerialDenseMatrix.hpp"
@@ -18,48 +19,57 @@
 #include "Tpetra_Operator.hpp"
 #include "Tpetra_Vector.hpp"
 
-typedef int GlobalOrdinal;
-typedef int LocalOrdinal;
-typedef double Scalar;
-typedef Tpetra::DefaultPlatform::DefaultPlatformType::NodeType Node;
+namespace // anonymous
+{
+    typedef int GlobalOrdinal;
+    typedef int LocalOrdinal;
+    typedef double Scalar;
+    typedef Tpetra::DefaultPlatform::DefaultPlatformType::NodeType Node;
 
-typedef Teuchos::Comm<GlobalOrdinal> Comm;
-typedef Teuchos::SerialDenseMatrix<LocalOrdinal, Scalar> SerialDenseMatrix;
-typedef Teuchos::SerialDenseSolver<LocalOrdinal, Scalar> SerialDenseSolver;
-typedef Teuchos::SerialDenseVector<LocalOrdinal, Scalar> SerialDenseVector;
-typedef Tpetra::CrsMatrix<Scalar, LocalOrdinal, GlobalOrdinal, Node> CrsMatrix;
-typedef Tpetra::Map<LocalOrdinal, GlobalOrdinal, Node> Map;
-typedef Teuchos::MpiComm<GlobalOrdinal> MpiComm;
-typedef Tpetra::Operator<Scalar, LocalOrdinal, GlobalOrdinal, Node> Operator;
-typedef Tpetra::MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node> MultiVector;
+    typedef Teuchos::Comm<GlobalOrdinal> Comm;
+    typedef Teuchos::SerialDenseMatrix<LocalOrdinal, Scalar> SerialDenseMatrix;
+    typedef Teuchos::SerialDenseSolver<LocalOrdinal, Scalar> SerialDenseSolver;
+    typedef Teuchos::SerialDenseVector<LocalOrdinal, Scalar> SerialDenseVector;
+    typedef Tpetra::CrsMatrix<Scalar, LocalOrdinal, GlobalOrdinal, Node> CrsMatrix;
+    typedef Tpetra::Map<LocalOrdinal, GlobalOrdinal, Node> Map;
+    typedef Teuchos::MpiComm<GlobalOrdinal> MpiComm;
+    typedef Tpetra::Operator<Scalar, LocalOrdinal, GlobalOrdinal, Node> Operator;
+    typedef Tpetra::MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node> MultiVector;
+    typedef Tpetra::Vector<Scalar, LocalOrdinal, GlobalOrdinal, Node> Vector;
 
-typedef Belos::SolverFactory<Scalar, MultiVector, Operator> SolverFactory;
-typedef Belos::SolverManager<Scalar, MultiVector, Operator> SolverManager;
-
-using std::make_shared;
-using std::shared_ptr;
-using std::cout;
-using std::endl;
-using std::setw;
-using Teuchos::arcp;
-using Teuchos::RCP;
-using Teuchos::rcp;
-using Teuchos::rcpFromRef;
-using Teuchos::ArrayRCP;
-using Teuchos::arrayViewFromVector;
-using Teuchos::ParameterList;
-using Teuchos::parameterList;
-using Teuchos::get_shared_ptr;
+    
+    typedef Belos::SolverFactory<Scalar, MultiVector, Operator> SolverFactory;
+    typedef Belos::SolverManager<Scalar, MultiVector, Operator> SolverManager;
+    typedef Belos::LinearProblem<Scalar, MultiVector, Operator> LinearProblem;
+    
+    using std::make_shared;
+    using std::shared_ptr;
+    using std::cout;
+    using std::endl;
+    using std::setw;
+    using Teuchos::arcp;
+    using Teuchos::RCP;
+    using Teuchos::rcp;
+    using Teuchos::rcpFromRef;
+    using Teuchos::ArrayRCP;
+    using Teuchos::arrayViewFromVector;
+    using Teuchos::ArrayView;
+    using Teuchos::ParameterList;
+    using Teuchos::parameterList;
+    using Teuchos::get_shared_ptr;
+}
 
 Test_Trilinos::
 Test_Trilinos(int size,
-            double dx,
-            double sigma_a,
-            double q):
+              double dx,
+              double sigma_a,
+              double q,
+              bool print):
     size_(size),
     dx_(dx),
     sigma_a_(sigma_a),
-    q_(q)
+    q_(q),
+    print_(print)
 {
     num_entries_per_row_.assign(size_, 3);
     num_entries_per_row_[0] = 2;
@@ -72,41 +82,83 @@ test1()
     shared_ptr<Comm> comm = make_shared<MpiComm>(MPI_COMM_WORLD);
     shared_ptr<Map> map = make_shared<Map>(size_, index_base_, rcp(comm));
     shared_ptr<CrsMatrix> mat = make_shared<CrsMatrix>(rcp(map), arcp(rcpFromRef(num_entries_per_row_)), Tpetra::ProfileType::StaticProfile);
-    shared_ptr<MultiVector> lhs = make_shared<MultiVector>(rcp(map), 1);
-    shared_ptr<MultiVector> rhs = make_shared<MultiVector>(rcp(map), 1);
+    shared_ptr<Vector> lhs = make_shared<Vector>(rcp(map));
+    shared_ptr<Vector> rhs = make_shared<Vector>(rcp(map));
 
     double on_diagonal = 2. / (dx_ * dx_) + sigma_a_;
     double off_diagonal = 1 / (dx_ * dx_);
 
+    RCP<Teuchos::FancyOStream> ostr = Teuchos::VerboseObjectBase::getDefaultOStream();
+    
     for (int i = 0; i < size_; ++i)
     {
         vector<int> cols;
         vector<double> vals;
-
+        
         if (i != 0)
         {
-            cols.push_back(i);
+            cols.push_back(i - 1);
             vals.push_back(-off_diagonal);
         }
         cols.push_back(i);
         vals.push_back(on_diagonal);
         if (i != size_ - 1)
         {
-            cols.push_back(i);
+            cols.push_back(i + 1);
             vals.push_back(-off_diagonal);
         }
-
+        
         mat->insertGlobalValues(i, arrayViewFromVector(cols), arrayViewFromVector(vals));
-        rhs->replaceGlobalValue(i, 0, q_);
+        rhs->replaceGlobalValue(i, q_);
     }
+    mat->fillComplete();
 
+    if (print_)
+    {
+        mat->describe((*ostr), Teuchos::EVerbosityLevel::VERB_EXTREME);
+    }
+    
+    shared_ptr<LinearProblem> problem = make_shared<LinearProblem>(rcp(mat), rcp(lhs), rcp(rhs));
+    if (!problem->setProblem())
+    {
+        cout << "Problem not set up correctly" << endl;
+        return;
+    }
+    
     shared_ptr<ParameterList> params = get_shared_ptr(parameterList());
-    params->set ("Num Blocks", 40);
-    params->set ("Maximum Iterations", 400);
-    params->set ("Convergence Tolerance", 1.0e-8);
-
+    // params->set ("Num Blocks", 1);
+    params->set("Maximum Iterations", 400);
+    params->set("Convergence Tolerance", 1.0e-8);
+    if (print_)
+    {
+        params->set("Verbosity", Belos::Debug + Belos::IterationDetails);
+        params->set("Verbosity", Belos::Errors + Belos::Warnings + Belos::StatusTestDetails);
+        int frequency=1;
+        params->set("Output Frequency", frequency);
+        params->set("Output Style", Belos::Brief);
+    }
+    
     shared_ptr<SolverFactory> factory = make_shared<SolverFactory>();
     shared_ptr<SolverManager> solver = get_shared_ptr(factory->create("GMRES", rcp(params)));
+    
+    solver->setProblem(rcp(problem));
+    
+    solver->solve();
+
+    if (print_)
+    {
+        lhs->describe(*ostr, Teuchos::EVerbosityLevel::VERB_EXTREME);
+    }
+    
+    // ArrayRCP<const double> result = problem->getLHS()->getData(0);
+    
+    // cout << endl << "Test_Trilinos: test1" << endl << endl;
+
+    // for (int i = 0; i < size_; ++i)
+    // {
+    //     cout << result[i] << " ";
+    // }
+    // cout << endl;
 }
 
 void Test_Trilinos::

@@ -14,7 +14,8 @@ public:
     Test_Trilinos(int size,
                   double dx,
                   double sigma_a,
-                  double q);
+                  double q,
+                  bool print = true);
 
     void test1();
     void test2();
@@ -26,6 +27,7 @@ private:
     double dx_;
     double sigma_a_;
     double q_;
+    bool print_;
     
     vector<size_t> num_entries_per_row_;
 };
