@@ -1,2 +1,0 @@
-/usr/bin/ar cq libmy_library.a  CMakeFiles/my_library.dir/src/Test_Tpetra.cc.o
-/usr/bin/ranlib libmy_library.a

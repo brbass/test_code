@@ -15,7 +15,7 @@
 
 using namespace std;
 
-int num_points = 1000;
+int num_points = 50;
 double length = 1.;
 double dx = length / num_points;
 double c = 0.5 / dx;
@@ -57,7 +57,7 @@ vector<double> get_b_data()
 int main()
 {
     bool print = false;
-    int num_solves = 1000;
+    int num_solves = 10000;
 
     Timer timer;
 
@@ -112,7 +112,7 @@ int main()
         timer.stop();
         
         cout << setw(16) << "GSL solve" << setw(16) << timer.time() << endl;
-        
+
         gsl_matrix_free(a);
         gsl_permutation_free(p);
     }
@@ -146,9 +146,17 @@ int main()
 
             solver.Solve();
 
+            x_temp.assign(solver.X(), solver.X() + num_points);
+            
             if (print)
             {
                 cout << x << endl;
+
+                for (int i = 0; i < num_points; ++i)
+                {
+                    cout << x_temp[i] << "\t";
+                }
+                cout << endl;
             }
         }
 

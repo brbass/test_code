@@ -1,0 +1,2 @@
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar qc libmylibrary.a  CMakeFiles/mylibrary.dir/src/Test_Tpetra.cc.o CMakeFiles/mylibrary.dir/src/Test_Epetra.cc.o
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ranlib libmylibrary.a

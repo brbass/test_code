@@ -7,7 +7,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -o3")
 
 # Find Trilinos packages
 
-set(TrilinosPackages Teuchos Tpetra Belos Anasazi)
+set(TrilinosPackages Teuchos Tpetra Belos Anasazi Epetra)
 
 foreach(TrilinosPackage ${TrilinosPackages})
     find_package(${TrilinosPackage} REQUIRED)
@@ -22,7 +22,7 @@ endforeach(TrilinosPackage)
 # Include source files
 
 include_directories(src)
-add_library(mylibrary src/Test_Trilinos.cc src/Test_Trilinos.hh)
+add_library(mylibrary src/Test_Tpetra.cc src/Test_Tpetra.hh src/Test_Epetra.cc src/Test_Epetra.hh)
 add_executable(tst_trilinos "src/main.cc")
 
 # Link libraries
