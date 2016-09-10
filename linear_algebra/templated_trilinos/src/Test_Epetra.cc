@@ -57,8 +57,7 @@ test_eigenvalue(int num_eigenvalues)
     params->set("Which", which);
     if (print_)
     {
-        // params->set("Verosity", Anasazi::TimingDetails + Anasazi::IterationDetails + Anasazi::Debug + Anasazi::FinalSummary);
-        params->set("Verosity", Anasazi::Debug);
+        params->set("Verbosity", Anasazi::IterationDetails + Anasazi::TimingDetails + Anasazi::FinalSummary);
         int frequency=1;
         params->set("Output Frequency", frequency);
     }

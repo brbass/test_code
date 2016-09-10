@@ -98,7 +98,57 @@ test_steady()
     solver->setProblem(rcp(problem));
     
     solver->solve();
+    
+    if (print_)
+    {
+        lhs->describe(*ostr, Teuchos::EVerbosityLevel::VERB_EXTREME);
+    }
+    
+    // ArrayRCP<const double> result = problem->getLHS()->getData(0);
+}
 
+// Simple diffusion problem with Amesos2 and Tpetra
+void Test_Tpetra::
+test_steady()
+{
+    shared_ptr<Comm> comm = get_comm();
+    shared_ptr<Map> map = get_map(comm);
+    shared_ptr<CrsMatrix> mat = get_diffusion_matrix(map);
+    shared_ptr<Vector> lhs = make_shared<Vector>(rcp(map));
+    shared_ptr<Vector> rhs = get_rhs_steady(map);
+    shared_ptr<LinearProblem> problem = get_steady_problem(mat,
+                                                           lhs,
+                                                           rhs);
+    
+    RCP<Teuchos::FancyOStream> ostr = Teuchos::VerboseObjectBase::getDefaultOStream();
+    
+    if (print_)
+    {
+        cout << endl << "Test 1: Belos and Tpetra" << endl << endl;
+        rhs->describe((*ostr), Teuchos::EVerbosityLevel::VERB_EXTREME);
+        mat->describe((*ostr), Teuchos::EVerbosityLevel::VERB_EXTREME);
+    }
+    
+    shared_ptr<ParameterList> params = get_shared_ptr(parameterList());
+    // params->set ("Num Blocks", 1);
+    params->set("Maximum Iterations", 400);
+    params->set("Convergence Tolerance", 1.0e-8);
+    if (print_)
+    {
+        params->set("Verbosity", Belos::Debug + Belos::IterationDetails);
+        params->set("Verbosity", Belos::Errors + Belos::Warnings + Belos::StatusTestDetails);
+        int frequency=1;
+        params->set("Output Frequency", frequency);
+        params->set("Output Style", Belos::Brief);
+    }
+    
+    shared_ptr<BelosSolverFactory> factory = make_shared<BelosSolverFactory>();
+    shared_ptr<BelosSolverManager> solver = get_shared_ptr(factory->create("GMRES", rcp(params)));
+    
+    solver->setProblem(rcp(problem));
+    
+    solver->solve();
+    
     if (print_)
     {
         lhs->describe(*ostr, Teuchos::EVerbosityLevel::VERB_EXTREME);

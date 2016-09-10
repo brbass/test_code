@@ -6,6 +6,7 @@
 #include <memory>
 #include <vector>
 
+#include "Amesos2.hpp"
 #include "AnasaziBlockKrylovSchurSolMgr.hpp"
 #include "AnasaziBasicEigenproblem.hpp"
 #include "AnasaziGeneralizedDavidsonSolMgr.hpp"
@@ -43,6 +44,8 @@ typedef Tpetra::Operator<Scalar, LocalOrdinal, GlobalOrdinal, Node> Operator;
 typedef Tpetra::MultiVector<Scalar, LocalOrdinal, GlobalOrdinal, Node> MultiVector;
 typedef Tpetra::Vector<Scalar, LocalOrdinal, GlobalOrdinal, Node> Vector;
 
+typedef Amesos2::Solver<CrsMatrix, MultiVector> AmesosSolver;
+
 typedef Anasazi::BasicEigenproblem<Scalar, MultiVector, Operator> Eigenproblem;
 // typedef Anasazi::BlockKrylovSchurSolMgr<Scalar, MultiVector, Operator> AnasaziSolverManager;
 typedef Anasazi::GeneralizedDavidsonSolMgr<Scalar, MultiVector, Operator> AnasaziSolverManager;
@@ -52,7 +55,7 @@ typedef Anasazi::Eigensolution<Scalar, MultiVector> Eigensolution;
 typedef Belos::LinearProblem<Scalar, MultiVector, Operator> LinearProblem;
 typedef Belos::SolverFactory<Scalar, MultiVector, Operator> BelosSolverFactory;
 typedef Belos::SolverManager<Scalar, MultiVector, Operator> BelosSolverManager;
-    
+
 using std::shared_ptr;
 using std::make_shared;
 using std::shared_ptr;
