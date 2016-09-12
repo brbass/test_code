@@ -1,1 +1,0 @@
-/usr/cac/rhel6/gcc-4.7.2/bin/g++    -std=c++11 -o3 -g   CMakeFiles/xml_parser.dir/src/main.cc.o CMakeFiles/xml_parser.dir/lib/pugixml.cpp.o  -o xml_parser -rdynamic 

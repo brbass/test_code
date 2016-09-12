@@ -1,1 +1,0 @@
-/usr/bin/c++   -L/home/software/rhel6/gsl/1.15/lib -lgsl -lgslcblas -lm -I/home/software/rhel6/gsl/1.15/include   CMakeFiles/testGsl.dir/src/main.cc.o  -o testGsl -rdynamic 

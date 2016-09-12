@@ -1,1 +1,0 @@
-/usr/bin/c++   -g   CMakeFiles/tst_Add.dir/tst_Add.cc.o  -o tst_Add -rdynamic ../src/libmath.a 

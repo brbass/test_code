@@ -1,1 +1,0 @@
-mpic++    -std=c++11 -o3 -I/Users/brbass/Documents/research/code/test_code/sort/nanoflann/include -g -Wl,-search_paths_first -Wl,-headerpad_max_install_names  CMakeFiles/classes.dir/src/main.cc.o CMakeFiles/classes.dir/src/Points.cc.o CMakeFiles/classes.dir/src/Random_Number_Generator.cc.o  -o classes  
