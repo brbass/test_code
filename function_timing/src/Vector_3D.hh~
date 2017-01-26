@@ -1,0 +1,38 @@
+#ifndef Vector_3D_hh
+#define Vector_3D_hh
+
+#include <vector>
+
+template<class Scalar>
+class Vector_3D
+{
+public:
+    Vector(int num1,
+           int num2,
+           int num3):
+        num1_(num1),
+        num2_(num2),
+        num3_(num3)
+    {
+        data_.assign(num1 * num2 * num3);
+    }
+    
+    Scalar &operator()(int i,
+                       int j,
+                       int k)
+    {
+        int k = k + num3_ * (j + num2_ * i);
+        
+        return data_[k];
+    }
+    
+private:
+
+    int num1_;
+    int num2_;
+    int num3_;
+
+    std::vector<Scalar> data_;
+};
+
+#endif

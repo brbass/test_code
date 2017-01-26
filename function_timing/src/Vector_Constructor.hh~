@@ -1,0 +1,9 @@
+#ifndef Vector_Constructor_hh
+#define Vector_Constructor_hh
+
+class Vector_Constructor
+{
+    
+}
+
+#endif
