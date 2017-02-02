@@ -34,4 +34,18 @@ private:
     std::vector<double> &data_;
 };
 
+std::vector<double> get_vector(int size)
+{
+    std::vector<double> data;
+    data.assign(size, 0.);
+
+    return data;
+}
+
+void change_vector(int size,
+                   std::vector<double> &data)
+{
+    data.assign(size, 0.);
+}
+
 #endif

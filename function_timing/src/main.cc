@@ -129,9 +129,41 @@ void vector_creation()
     cout << endl;
 }
 
+void vector_elide()
+{
+    cout << "VECTOR ELIDE" << endl;
+    int iter = 1000;
+    int size = 1000000;
+
+    timer.start();
+    int sum = 0;
+    for (int a = 0; a < iter; ++a)
+    {
+        vector<double> data = get_vector(size);
+        sum += data[0];
+    }
+    timer.stop();
+    cout << "return by value :\t" << timer.time() << endl;
+
+    timer.start();
+    for (int a = 0; a < iter; ++a)
+    {
+        vector<double> data;
+        change_vector(size,
+                      data);
+        sum += data[0];
+    }
+    timer.stop();
+    cout << "return by reference :\t" << timer.time() << endl;
+    cout << sum << endl;
+    cout << endl;
+}
+
 int main()
 {
+    vector_elide();
     vector_access();
     vector_creation();
+    
     return 0;
 }
